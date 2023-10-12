@@ -10,11 +10,10 @@ import (
 )
 
 const (
-	dbDriver = "postgres"
 	dbSource = "postgresql://postgres:postgres@localhost:5432/bank?sslmode=disable"
 )
 
-var testQueries *Queries
+var testStore Store
 
 func TestMain(m *testing.M) {
 	conn, err := pgxpool.New(context.Background(), dbSource)
@@ -22,7 +21,6 @@ func TestMain(m *testing.M) {
 		log.Fatalf("cannot connect to db: %v", err)
 	}
 
-	testQueries = New(conn)
-
+	testStore = NewStore(conn)
 	os.Exit(m.Run())
 }
