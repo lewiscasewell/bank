@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/lewiscasewell/bank/util"
 )
 
 const (
@@ -16,7 +17,12 @@ const (
 var testStore Store
 
 func TestMain(m *testing.M) {
-	conn, err := pgxpool.New(context.Background(), dbSource)
+	config, err := util.LoadConfig("../..")
+	if err != nil {
+		log.Fatalf("cannot load config: %v", err)
+	}
+
+	conn, err := pgxpool.New(context.Background(), config.DBSource)
 	if err != nil {
 		log.Fatalf("cannot connect to db: %v", err)
 	}

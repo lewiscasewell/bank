@@ -7,15 +7,16 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/lewiscasewell/bank/api"
 	db "github.com/lewiscasewell/bank/db/sqlc"
-)
-
-const (
-	dbSource      = "postgresql://postgres:postgres@localhost:5432/bank?sslmode=disable"
-	serverAddress = "0.0.0.0:8080"
+	"github.com/lewiscasewell/bank/util"
 )
 
 func main() {
-	conn, err := pgxpool.New(context.Background(), dbSource)
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatalf("cannot load config: %v", err)
+	}
+
+	conn, err := pgxpool.New(context.Background(), config.DBSource)
 	if err != nil {
 		log.Fatalf("cannot connect to db: %v", err)
 	}
@@ -23,7 +24,7 @@ func main() {
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
 
-	err = server.Start(serverAddress)
+	err = server.Start(config.ServerAddress)
 	if err != nil {
 		log.Fatalf("cannot start server: %v", err)
 	}
