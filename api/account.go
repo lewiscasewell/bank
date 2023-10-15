@@ -28,6 +28,12 @@ func (server *Server) createAccount(c *gin.Context) {
 
 	account, err := server.store.CreateAccount(c, arg)
 	if err != nil {
+		errCode := db.ErrorCode(err)
+		if errCode == db.ForeignKeyViolation || errCode == db.UniqueViolation {
+			c.JSON(http.StatusForbidden, errorResponse(err))
+			return
+		}
+
 		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
