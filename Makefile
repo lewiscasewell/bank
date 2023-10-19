@@ -1,11 +1,11 @@
-DB_CONTAINER=postgres
+DB_CONTAINER=postgres15
 DB_USER=postgres
 DB_PASSWORD=postgres
-DB_PORT=5432
+DB_PORT=5433
 DB_NAME=bank
 
 postgres:
-	docker run --name $(DB_CONTAINER) -e POSTGRES_PASSWORD=$(DB_PASSWORD) -p 5431:9999 -d postgres
+	docker run --name $(DB_CONTAINER) --network bank-network -e POSTGRES_PASSWORD=$(DB_PASSWORD) -p 5433:5432 -d postgres
 
 createdb:
 	docker exec -it $(DB_CONTAINER) createdb -U $(DB_USER) $(DB_NAME)
