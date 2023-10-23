@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	DBSource            string        `mapstructure:"DB_SOURCE" default:"postgresql://postgres:postgres@localhost:5432/bank?sslmode=disable"`
+	MigrationURL        string        `mapstructure:"MIGRATION_URL"`
 	ServerAddress       string        `mapstructure:"SERVER_ADDRESS" default:"localhost:8080"`
 	TokenSymmetricKey   string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 	AccessTokenDuration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION" default:"15m"`
