@@ -4,6 +4,7 @@ set -e
 
 # Wait for the PostgreSQL database to be ready
 /app/wait-for.sh postgres:5432 -t 60
+source /app/app.env
 /app/migrate -path /app/db/migration -database "$DB_SOURCE" -verbose up
 
 
